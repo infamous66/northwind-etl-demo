@@ -2,6 +2,13 @@
 # Chinook to Northwind Data Migration
 
 This project demonstrates the migration of data from the Chinook database (MySQL server) to the Northwind database (MS SQL server). The migration process covers multiple tables, including employees, customers, orders (invoices), genres, artists, tracks (products), and invoice lines (order details). 
+The following diagrams show the structure of the Chinook and Northwind databases:
+
+### Chinook Database Diagram
+![Chinook Database](./images/ChinookDiagram.jpg)
+
+### Northwind Database Diagram
+![Northwind Database](./images/NorthwindDiagram.jpg)
 
 ## Features
 - **MySQL to MS SQL migration**: Uses `pymysql` and `pyodbc` to handle connections to both databases.
