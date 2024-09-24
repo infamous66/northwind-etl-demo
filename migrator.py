@@ -50,7 +50,6 @@ try:
         print(f"Transaction failed while adding columns to Employee table: {e}")
         raise e
 
-
     # Insert data into Northwind Employees table
     insert_query = """
     INSERT INTO Employees (
@@ -83,7 +82,6 @@ try:
     except Exception as e:
         print(f"Transaction Failed while updating ReportsTo column: {e}")
         raise e
-
 
     # Retrieve data from Chinook Customer table,
     # transform FirstName and LastName columns to match Northwind ContactName column
@@ -160,7 +158,6 @@ try:
     except Exception as e:
         print(f"Transaction failed while inserting customer data: {e}")
         raise e
-
 
     # Retrieve data from Chinook Invoice table
     with mysql_conn.cursor() as cursor:
@@ -280,7 +277,6 @@ try:
         print(f"Transaction Failed while adding columns to Categories table: {e}")
         raise e
 
-
     # Insert Genre data to Categories table
     insert_query = """
     INSERT INTO Categories (
@@ -294,7 +290,6 @@ try:
     except Exception as e:
         print(f"Transaction Failed while inserting genre data: {e}")
         raise e
-
 
     # Retrieve data from Chinook Artist table
     with mysql_conn.cursor() as cursor:
@@ -402,7 +397,6 @@ try:
         print(f"Transaction Failed while inserting track data: {e}")
         raise e
 
-
     # Update SupplierID column
     update_query = """
     UPDATE p
@@ -418,7 +412,6 @@ try:
     except Exception as e:
         print(f"Transaction Failed while updating SupplierID in Product table: {e}")
         raise e
-
 
     # Update CategoryID column
     update_query = """
@@ -437,24 +430,12 @@ try:
         print(f"Transaction Failed while updating CategoryID in Product table: {e}")
         raise e
 
-
-    # Retrieve data from Chinook InvoiceLine table
-    with mysql_conn.cursor() as cursor:
-        cursor.execute(
-            """
-            SELECT InvoiceId, TrackId, UnitPrice, Quantity
-            FROM InvoiceLine
-            """
-        )
-        invoiceline_data = cursor.fetchall()
-    print("Invoice Line data retrieved")
-
     # Create temporary table to store InvoiceLine data
     try:
         with sql_server_conn.cursor() as sql_cursor:
             sql_cursor.execute(
                 """
-                CREATE TABLE OrderDetailsTemp (
+                CREATE TABLE #OrderDetailsTemp (
                 chinook_invoice_id INT NOT NULL,
                 chinook_track_id INT NOT NULL,
                 UnitPrice MONEY NOT NULL,
@@ -466,42 +447,53 @@ try:
         print(f"Transaction Failed while creating a temporary table: {e}")
         raise e
 
+    # Retrieve data from Chinook InvoiceLine table by batches
+    for i in range(3):
+        with mysql_conn.cursor() as cursor:
+            cursor.execute(
+                f"""
+                SELECT InvoiceId, TrackId, UnitPrice, Quantity
+                FROM InvoiceLine
+                LIMIT 800 OFFSET {i * 800}
+                """
+            )
+            invoiceline_data = cursor.fetchall()
+        print(f"Batch {i + 1} from invoice line data data retrieved")
 
-    # Insert InvoiceLine data into Northwind OrderDetailsTemp table
-    insert_query = """
-    INSERT INTO OrderDetailsTemp (
-    chinook_invoice_id, chinook_track_id, UnitPrice, Quantity)
-    VALUES (?, ?, ?, ?)
-    """
+        # Insert InvoiceLine data into Northwind OrderDetailsTemp table
+        insert_query = """
+        INSERT INTO #OrderDetailsTemp (
+        chinook_invoice_id, chinook_track_id, UnitPrice, Quantity)
+        VALUES (?, ?, ?, ?)
+        """
 
-    try:
-        with sql_server_conn.cursor() as sql_cursor:
-            sql_cursor.executemany(insert_query, invoiceline_data)
-    except Exception as e:
-        print(f"Transaction Failed while inserting invoice line data into temporary table: {e}")
-        raise e
+        try:
+            with sql_server_conn.cursor() as sql_cursor:
+                sql_cursor.executemany(insert_query, invoiceline_data)
+        except Exception as e:
+            print(f"Transaction Failed while inserting batch {i + 1} from invoice line data into temporary table: {e}")
+            raise e
 
+        # Insert corresponding data into Order Details table
+        insert_query = """
+        INSERT INTO [Order Details] (
+        OrderID, ProductID, UnitPrice, Quantity)
+        SELECT o.OrderID, p.ProductID, odt.UnitPrice, odt.Quantity
+        FROM #OrderDetailsTemp odt 
+        INNER JOIN Orders o 
+        ON odt.chinook_invoice_id = o.chinook_invoice_id
+        INNER JOIN Products p
+        ON odt.chinook_track_id = p.chinook_track_id
+        """
 
-    # Insert corresponding data into Order Details table
-    insert_query = """
-    INSERT INTO [Order Details] (
-    OrderID, ProductID, UnitPrice, Quantity)
-    SELECT o.OrderID, p.ProductID, odt.UnitPrice, odt.Quantity
-    FROM OrderDetailsTemp odt 
-    INNER JOIN Orders o 
-    ON odt.chinook_invoice_id = o.chinook_invoice_id
-    INNER JOIN Products p
-    ON odt.chinook_track_id = p.chinook_track_id
-    """
-
-    try:
-        with sql_server_conn.cursor() as sql_cursor:
-            sql_cursor.execute(insert_query)
-            print("Invoice line data inserted successfully")
-    except Exception as e:
-        print(f"Transaction Failed while inserting data into Order details: {e}")
-        raise e
-
+        try:
+            with sql_server_conn.cursor() as sql_cursor:
+                sql_cursor.execute(insert_query)
+                sql_cursor.execute("DELETE FROM #OrderDetailsTemp")
+                print(f" Batch {i + 1} from invoice line data inserted successfully")
+        except Exception as e:
+            print(f"Transaction Failed while inserting batch {i + 1} from temporary table into Order details: {e}")
+            raise e
 
     # Drop temporary columns
     try:
@@ -568,12 +560,6 @@ try:
                 DROP COLUMN chinook_track_id;
                 """
             )
-
-            sql_cursor.execute(
-                """
-                DROP TABLE OrderDetailsTemp;
-                """
-            )
             sql_server_conn.commit()
     except Exception as e:
         print(f"Transaction Failed while dropping temporary columns: {e}")
@@ -581,3 +567,5 @@ try:
 except Exception as e:
     sql_server_conn.rollback()
     print("Migration stopped")
+
+print('Migration completed successfully')
