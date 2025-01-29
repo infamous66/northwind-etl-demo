@@ -52,6 +52,7 @@ jobs:
         python test2.py
 
     - name: Archive code coverage results
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: code-coverage-report
