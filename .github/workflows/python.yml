@@ -50,3 +50,9 @@ jobs:
       run: |
         cd ./tests/
         python test2.py
+
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v4
+      with:
+        name: code-coverage-report
+        path: ./tests/mismatched_employees.csv
