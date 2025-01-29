@@ -27,13 +27,13 @@ jobs:
 #    - name: Start SQL servers with Docker Compose
 #      run: docker compose -f ./tests/docker-compose.yaml up -d
 
-#    - name: Wait for database initialization
-#      run: sleep 75  # MSSQL needs 60s sleep + buffer in its startup command
-
     - name: Start SQL servers with Docker Compose
       uses: hoverkraft-tech/compose-action@v2.0.1
       with:
         compose-file: ./tests/docker-compose.yaml
+
+    - name: Wait for database initialization
+      run: sleep 75  # MSSQL needs 60s sleep + buffer in its startup command
 
     - name: Run data migration with migrator.py
       run: python ./migrator.py
