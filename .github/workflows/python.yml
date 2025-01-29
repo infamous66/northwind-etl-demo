@@ -2,9 +2,9 @@ name: SQL Migration and Test Workflow
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   migrate-and-test:
@@ -24,11 +24,16 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Start SQL servers with Docker Compose
-      run: docker compose -f ./tests/docker-compose.yaml up -d
+#    - name: Start SQL servers with Docker Compose
+#      run: docker compose -f ./tests/docker-compose.yaml up -d
 
-    - name: Wait for database initialization
-      run: sleep 75  # MSSQL needs 60s sleep + buffer in its startup command
+#    - name: Wait for database initialization
+#      run: sleep 75  # MSSQL needs 60s sleep + buffer in its startup command
+
+    - name: Start SQL servers with Docker Compose
+      uses: hoverkraft-tech/compose-action@v2.0.1
+      with:
+        compose-file: ./tests/docker-compose.yaml
 
     - name: Run data migration with migrator.py
       run: python ./migrator.py
@@ -36,6 +41,6 @@ jobs:
     - name: Run migration tests
       run: python ./tests/test2.py
 
-    - name: Tear down Docker Compose services
-      if: always()
-      run: docker compose -f ./tests/docker-compose.yaml down
+#    - name: Tear down Docker Compose services
+#      if: always()
+#      run: docker compose -f ./tests/docker-compose.yaml down
