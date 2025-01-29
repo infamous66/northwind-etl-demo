@@ -9,7 +9,7 @@ mysql_conn = pymysql.connect(
 
 # SQL server connection (Northwind database)
 sql_server_conn = pyodbc.connect(
-    "DRIVER={ODBC Driver 18 for SQL Server};"
+    "DRIVER={ODBC Driver 17 for SQL Server};"
     "SERVER=127.0.0.1;"  # Replace with your server address
     "DATABASE=master;"  # Replace with your database name
     "UID=sa;"  # Replace with your SQL Server username
