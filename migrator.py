@@ -3,16 +3,17 @@ import pyodbc
 
 # MySQL connection (Chinook database)
 mysql_conn = pymysql.connect(
-    host="localhost", user="root", password="123852", database="chinook_autoincrement",
+    host="localhost", user="root", password="rootpassword", database="Chinook_AutoIncrement",
 )
 
 
 # SQL server connection (Northwind database)
 sql_server_conn = pyodbc.connect(
     "DRIVER={ODBC Driver 18 for SQL Server};"
-    "SERVER=WIN-Q9N7UMNNT2O;"
-    "DATABASE=Northwind;"
-    "Trusted_Connection=yes;"
+    "SERVER=127.0.0.1;"  # Replace with your server address
+    "DATABASE=master;"  # Replace with your database name
+    "UID=sa;"  # Replace with your SQL Server username
+    "PWD=Password123!;"  # Replace with your SQL Server password
     "TrustServerCertificate=yes;"
 )
 
@@ -566,6 +567,6 @@ try:
         raise e
 except Exception as e:
     sql_server_conn.rollback()
-    print("Migration stopped")
+    print(f"Migration stopped: {e}")
 
 print('Migration completed successfully')

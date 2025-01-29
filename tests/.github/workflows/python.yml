@@ -1,0 +1,39 @@
+name: SQL Migration and Test Workflow
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  migrate-and-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.12"
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r D:\Development\northwind-etl-demo\requirements.txt
+
+    - name: Start SQL servers with Docker Compose
+      run: docker-compose -f D:\Development\northwind-etl-demo\tests\docker-compose.yaml up -d
+
+    - name: Run data migration with migrator.py
+      run: python D:\Development\northwind-etl-demo\migrator.py
+
+    - name: Run migration tests with test.py
+      run: python test2.py
+
+    - name: Tear down Docker Compose services
+      if: always()
+      run: docker-compose -f D:\Development\northwind-etl-demo\tests\docker-compose.yaml down

@@ -1,0 +1,357 @@
+{
+    "schema": {
+        "columns": [
+            {
+                "name": "EmployeeID",
+                "dtype": "<class 'int'>"
+            },
+            {
+                "name": "LastName",
+                "dtype": "<class 'str'>"
+            },
+            {
+                "name": "FirstName",
+                "dtype": "<class 'str'>"
+            },
+            {
+                "name": "Title",
+                "dtype": "<class 'str'>"
+            },
+            {
+                "name": "TitleOfCourtesy",
+                "dtype": "<class 'str'>"
+            },
+            {
+                "name": "BirthDate",
+                "dtype": "<class 'datetime.datetime'>"
+            },
+            {
+                "name": "HireDate",
+                "dtype": "<class 'datetime.datetime'>"
+            },
+            {
+                "name": "Address",
+                "dtype": "<class 'str'>"
+            },
+            {
+                "name": "City",
+                "dtype": "<class 'str'>"
+            },
+            {
+                "name": "Region",
+                "dtype": "<class 'str'>"
+            },
+            {
+                "name": "PostalCode",
+                "dtype": "<class 'str'>"
+            },
+            {
+                "name": "Country",
+                "dtype": "<class 'str'>"
+            },
+            {
+                "name": "HomePhone",
+                "dtype": "<class 'str'>"
+            },
+            {
+                "name": "Extension",
+                "dtype": "<class 'str'>"
+            },
+            {
+                "name": "ReportsTo",
+                "dtype": "<class 'int'>"
+            }
+        ]
+    },
+    "data": [
+        [
+            1,
+            "Davolio",
+            "Nancy",
+            "Sales Representative",
+            "Ms.",
+            "1948-12-08T00:00:00",
+            "1992-05-01T00:00:00",
+            "507 - 20th Ave. E.Apt. 2A",
+            "Seattle",
+            "WA",
+            "98122",
+            "USA",
+            "(206) 555-9857",
+            "5467",
+            2
+        ],
+        [
+            2,
+            "Fuller",
+            "Andrew",
+            "Vice President, Sales",
+            "Dr.",
+            "1952-02-19T00:00:00",
+            "1992-08-14T00:00:00",
+            "908 W. Capital Way",
+            "Tacoma",
+            "WA",
+            "98401",
+            "USA",
+            "(206) 555-9482",
+            "3457",
+            null
+        ],
+        [
+            3,
+            "Leverling",
+            "Janet",
+            "Sales Representative",
+            "Ms.",
+            "1963-08-30T00:00:00",
+            "1992-04-01T00:00:00",
+            "722 Moss Bay Blvd.",
+            "Kirkland",
+            "WA",
+            "98033",
+            "USA",
+            "(206) 555-3412",
+            "3355",
+            2
+        ],
+        [
+            4,
+            "Peacock",
+            "Margaret",
+            "Sales Representative",
+            "Mrs.",
+            "1937-09-19T00:00:00",
+            "1993-05-03T00:00:00",
+            "4110 Old Redmond Rd.",
+            "Redmond",
+            "WA",
+            "98052",
+            "USA",
+            "(206) 555-8122",
+            "5176",
+            2
+        ],
+        [
+            5,
+            "Buchanan",
+            "Steven",
+            "Sales Manager",
+            "Mr.",
+            "1955-03-04T00:00:00",
+            "1993-10-17T00:00:00",
+            "14 Garrett Hill",
+            "London",
+            null,
+            "SW1 8JR",
+            "UK",
+            "(71) 555-4848",
+            "3453",
+            2
+        ],
+        [
+            6,
+            "Suyama",
+            "Michael",
+            "Sales Representative",
+            "Mr.",
+            "1963-07-02T00:00:00",
+            "1993-10-17T00:00:00",
+            "Coventry House\r\nMiner Rd.",
+            "London",
+            null,
+            "EC2 7JR",
+            "UK",
+            "(71) 555-7773",
+            "428",
+            5
+        ],
+        [
+            7,
+            "King",
+            "Robert",
+            "Sales Representative",
+            "Mr.",
+            "1960-05-29T00:00:00",
+            "1994-01-02T00:00:00",
+            "Edgeham Hollow\r\nWinchester Way",
+            "London",
+            null,
+            "RG1 9SP",
+            "UK",
+            "(71) 555-5598",
+            "465",
+            5
+        ],
+        [
+            8,
+            "Callahan",
+            "Laura",
+            "Inside Sales Coordinator",
+            "Ms.",
+            "1958-01-09T00:00:00",
+            "1994-03-05T00:00:00",
+            "4726 - 11th Ave. N.E.",
+            "Seattle",
+            "WA",
+            "98105",
+            "USA",
+            "(206) 555-1189",
+            "2344",
+            2
+        ],
+        [
+            9,
+            "Dodsworth",
+            "Anne",
+            "Sales Representative",
+            "Ms.",
+            "1966-01-27T00:00:00",
+            "1994-11-15T00:00:00",
+            "7 Houndstooth Rd.",
+            "London",
+            null,
+            "WG2 7LT",
+            "UK",
+            "(71) 555-4444",
+            "452",
+            5
+        ],
+        [
+            10,
+            "Adams",
+            "Andrew",
+            "General Manager",
+            null,
+            "1962-02-18T00:00:00",
+            "2002-08-14T00:00:00",
+            "11120 Jasper Ave NW",
+            "Edmonton",
+            "AB",
+            "T5K 2N1",
+            "Canada",
+            "+1 (780) 428-9482",
+            null,
+            null
+        ],
+        [
+            11,
+            "Edwards",
+            "Nancy",
+            "Sales Manager",
+            null,
+            "1958-12-08T00:00:00",
+            "2002-05-01T00:00:00",
+            "825 8 Ave SW",
+            "Calgary",
+            "AB",
+            "T2P 2T3",
+            "Canada",
+            "+1 (403) 262-3443",
+            null,
+            10
+        ],
+        [
+            12,
+            "Peacock",
+            "Jane",
+            "Sales Support Agent",
+            null,
+            "1973-08-29T00:00:00",
+            "2002-04-01T00:00:00",
+            "1111 6 Ave SW",
+            "Calgary",
+            "AB",
+            "T2P 5M5",
+            "Canada",
+            "+1 (403) 262-3443",
+            null,
+            11
+        ],
+        [
+            13,
+            "Park",
+            "Margaret",
+            "Sales Support Agent",
+            null,
+            "1947-09-19T00:00:00",
+            "2003-05-03T00:00:00",
+            "683 10 Street SW",
+            "Calgary",
+            "AB",
+            "T2P 5G3",
+            "Canada",
+            "+1 (403) 263-4423",
+            null,
+            11
+        ],
+        [
+            14,
+            "Johnson",
+            "Steve",
+            "Sales Support Agent",
+            null,
+            "1965-03-03T00:00:00",
+            "2003-10-17T00:00:00",
+            "7727B 41 Ave",
+            "Calgary",
+            "AB",
+            "T3B 1Y7",
+            "Canada",
+            "1 (780) 836-9987",
+            null,
+            11
+        ],
+        [
+            15,
+            "Mitchell",
+            "Michael",
+            "IT Manager",
+            null,
+            "1973-07-01T00:00:00",
+            "2003-10-17T00:00:00",
+            "5827 Bowness Road NW",
+            "Calgary",
+            "AB",
+            "T3B 0C5",
+            "Canada",
+            "+1 (403) 246-9887",
+            null,
+            10
+        ],
+        [
+            16,
+            "King",
+            "Robert",
+            "IT Staff",
+            null,
+            "1970-05-29T00:00:00",
+            "2004-01-02T00:00:00",
+            "590 Columbia Boulevard West",
+            "Lethbridge",
+            "AB",
+            "T1K 5N8",
+            "Canada",
+            "+1 (403) 456-9986",
+            null,
+            15
+        ],
+        [
+            17,
+            "Callahan",
+            "Laura",
+            "IT Staff",
+            null,
+            "1968-01-09T00:00:00",
+            "2004-03-04T00:00:00",
+            "923 7 ST NW",
+            "Lethbridge",
+            "AB",
+            "T1H 1Y8",
+            "Canada",
+            "+1 (403) 467-3351",
+            null,
+            15
+        ]
+    ]
+}
