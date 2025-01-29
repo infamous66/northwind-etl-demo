@@ -24,8 +24,16 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-#    - name: Start SQL servers with Docker Compose
-#      run: docker compose -f ./tests/docker-compose.yaml up -d
+    - name: Install SQL Server ODBC Driver
+      run: |
+        # Add Microsoft repository and install ODBC driver
+        apt-get update
+        apt-get install -y lsb-release
+        curl -sSL https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > /etc/apt/sources.list.d/mssql-release.list
+        curl -sSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/microsoft.gpg
+        apt-get update
+        ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev
+        odbcinst -j  # Verify installation
 
     - name: Start SQL servers with Docker Compose
       uses: hoverkraft-tech/compose-action@v2.0.1
@@ -40,7 +48,3 @@ jobs:
 
     - name: Run migration tests
       run: python ./tests/test2.py
-
-#    - name: Tear down Docker Compose services
-#      if: always()
-#      run: docker compose -f ./tests/docker-compose.yaml down
