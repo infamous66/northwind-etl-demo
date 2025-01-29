@@ -26,8 +26,13 @@ jobs:
 
     - name: Install ODBC 17 for SQL Server
       run: |
-        sudo ACCEPT_EULA=Y apt-get update
-        sudo ACCEPT_EULA=Y apt-get install -y unixodbc-dev msodbcsql17
+        sudo apt-get update
+        sudo apt-get install -y lsb-release
+        curl -sSL https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+        curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/microsoft.gpg
+        sudo apt-get update
+        sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev
+        odbcinst -j
 
     - name: Start SQL servers with Docker Compose
       uses: hoverkraft-tech/compose-action@v2.0.1
