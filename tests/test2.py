@@ -91,7 +91,7 @@ def compare_dataframes(df1, df2):
 
 
 # Example usage
-connection_string = ("DRIVER={ODBC Driver 1 for SQL Server};SERVER=127.0.0.1;"
+connection_string = ("DRIVER={ODBC Driver 17 for SQL Server};SERVER=127.0.0.1;"
                      "DATABASE=master;UID=sa;PWD=Password123!;TrustServerCertificate=yes;")
 
 
