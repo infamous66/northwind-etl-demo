@@ -91,7 +91,7 @@ def compare_dataframes(df1, df2):
 
 
 # Example usage
-connection_string = ("DRIVER={ODBC Driver 17 for SQL Server};SERVER=127.0.0.1;"
+connection_string = ("DRIVER={ODBC Driver 1 for SQL Server};SERVER=127.0.0.1;"
                      "DATABASE=master;UID=sa;PWD=Password123!;TrustServerCertificate=yes;")
 
 
@@ -110,11 +110,14 @@ query = '''SELECT [EmployeeID]
               ,[HomePhone]
               ,[Extension]
               ,[ReportsTo]
-        FROM [master].[dbo].[Employees]'''
+        FROM [master].[dbo].[Employees]
+        WHERE [EmployeeID] > 9
+        '''
 
-# Serialize data from database
+# Read serialized data from JSON
 with open('serialized_data.json', 'r') as serialized_json:
     serialized_data = serialized_json.read()
+
 # Construct DataFrame from serialized JSON
 df_from_json = dataframe_from_json(serialized_data)
 
