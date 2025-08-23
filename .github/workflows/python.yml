@@ -44,12 +44,22 @@ jobs:
       run: sleep 75  # MSSQL needs 60s sleep + buffer in its startup command
 
     - name: Run data migration with migrator.py
-      run: python ./migrator.py
+      run: python ./migrator.py --batch-size 800 --num-batches 3
 
     - name: Run migration tests
       run: |
         cd ./tests/
         python test2.py
+        
+    - name: Run batching configuration tests
+      run: |
+        cd ./tests/
+        python test_batching.py
+        
+    - name: Run argument parsing tests
+      run: |
+        cd ./tests/
+        python test_args.py
 
     - name: Archive code coverage results
       if: always()

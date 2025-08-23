@@ -12,6 +12,7 @@ The following diagrams show the structure of the Chinook and Northwind databases
 
 ## Features
 - **MySQL to MS SQL migration**: Uses `pymysql` and `pyodbc` to handle connections to both databases.
+- **Configurable batching**: OrderDetails migration supports configurable batch sizes and number of batches via command line parameters.
 - **Tables migrated**: 
   - Chinook `Employees` -> Northwind `Employees`
   - Chinook `Customers` -> Northwind `Customers`
@@ -21,6 +22,49 @@ The following diagrams show the structure of the Chinook and Northwind databases
   - Chinook `Artist` -> Northwind `Suppliers`
   - Chinook `Track` -> Northwind `Products`
 
+## Usage
+
+### Basic Migration
+```bash
+python migrator.py
+```
+
+### Configurable Batching
+```bash
+# Custom batch size
+python migrator.py --batch-size 500
+
+# Custom number of batches
+python migrator.py --num-batches 5
+
+# Both parameters
+python migrator.py --batch-size 1000 --num-batches 2
+```
+
+For more examples, see [usage_examples.md](usage_examples.md).
+
+## Testing
+
+The project includes several test suites:
+
+- **test2.py**: Validates migrated data against expected results
+- **test_batching.py**: Tests different batching configurations
+- **test_args.py**: Unit tests for command line argument parsing
+
+Run tests locally:
+```bash
+cd tests/
+python test2.py
+python test_batching.py
+python test_args.py
+```
+
+### Dry-Run Testing
+Test your batching configuration before running the actual migration:
+```bash
+python dry_run.py --batch-size 500 --num-batches 4
+```
+
 ## Key Challenges and Solutions
 ### 1. Migrating `InvoiceLine` to `Order Details`:
 - **Issue**: Northwind’s `Order Details` table uses a composite key consisting of `OrderID` and `ProductID`, making direct migration impossible.
@@ -29,6 +73,10 @@ The following diagrams show the structure of the Chinook and Northwind databases
 ### 2. Handling `ReportsTo` column in `Employees` table:
 - **Issue**: The `ReportsTo` column in Chinook's `Employee` table references other employees, so the corresponding IDs needed to be updated in the Northwind `Employees` table.
 - **Solution**: Two temporary columns were added to the `Employees` table in Northwind to store the Chinook IDs. After inserting the data, an update query was used to map the `ReportsTo` values by joining the temporary columns with the new Northwind employee IDs.
+
+### 3. Configurable Batching for OrderDetails Migration:
+- **Issue**: The original implementation used hardcoded batch sizes (800 records per batch, 3 batches) which may not be optimal for all scenarios.
+- **Solution**: Added command line parameters `--batch-size` and `--num-batches` to make the batching logic configurable. This allows users to optimize performance based on their specific data size and system resources.
 
 ### 3. Transforming Customer Data:
 - **Issue**: Chinook separates first and last names, while Northwind uses a single `ContactName` field.
