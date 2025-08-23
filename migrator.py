@@ -1,5 +1,30 @@
 import pymysql
 import pyodbc
+import argparse
+import sys
+
+# Parse command line arguments
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='Chinook to Northwind Data Migration')
+    parser.add_argument('--batch-size', type=int, default=800, 
+                       help='Batch size for OrderDetails migration (default: 800)')
+    parser.add_argument('--num-batches', type=int, default=3,
+                       help='Number of batches for OrderDetails migration (default: 3)')
+    return parser.parse_args()
+
+# Parse command line arguments
+args = parse_arguments()
+
+# Validate arguments
+if args.batch_size <= 0:
+    print("Error: batch-size must be greater than 0")
+    sys.exit(1)
+
+if args.num_batches <= 0:
+    print("Error: num-batches must be greater than 0")
+    sys.exit(1)
+
+print(f"Using batch size: {args.batch_size}, number of batches: {args.num_batches}")
 
 # MySQL connection (Chinook database)
 mysql_conn = pymysql.connect(
@@ -449,13 +474,13 @@ try:
         raise e
 
     # Retrieve data from Chinook InvoiceLine table by batches
-    for i in range(3):
+    for i in range(args.num_batches):
         with mysql_conn.cursor() as cursor:
             cursor.execute(
                 f"""
                 SELECT InvoiceId, TrackId, UnitPrice, Quantity
                 FROM InvoiceLine
-                LIMIT 800 OFFSET {i * 800}
+                LIMIT {args.batch_size} OFFSET {i * args.batch_size}
                 """
             )
             invoiceline_data = cursor.fetchall()
