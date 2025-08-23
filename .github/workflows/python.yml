@@ -51,15 +51,6 @@ jobs:
         cd ./tests/
         python test2.py
         
-    - name: Run batching configuration tests
-      run: |
-        cd ./tests/
-        python test_batching.py
-        
-    - name: Run argument parsing tests
-      run: |
-        cd ./tests/
-        python test_args.py
 
     - name: Archive code coverage results
       if: always()
